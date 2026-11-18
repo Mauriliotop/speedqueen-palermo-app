@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E5322A">
+<meta name="description" content="La tua lavanderia self-service a Palermo: macchine in tempo reale, Fidelity Card, ritiro a domicilio e promozioni.">
+<title>Speed Queen Palermo</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Speed Queen">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ GATE: REGISTRAZIONE ============ -->
+<section id="gate" class="gate" hidden>
+  <div class="gate-inner">
+    <div class="gate-brand">
+      <div class="mark" id="gate-mark"></div>
+      <div>
+        <div class="gname">Speed Queen</div>
+        <div class="gsub">PALERMO · POLICLINICO</div>
+      </div>
+    </div>
+
+    <h1 class="gate-title">Benvenuto.<br>Registrati in un minuto.</h1>
+    <p class="gate-lead">Crea il tuo profilo per usare la Fidelity Card, prenotare il ritiro a domicilio e ricevere le promozioni.</p>
+
+    <form id="reg-form" class="form" novalidate>
+      <div class="field-row">
+        <label class="field"><span>Nome</span><input name="nome" autocomplete="given-name" required></label>
+        <label class="field"><span>Cognome</span><input name="cognome" autocomplete="family-name" required></label>
+      </div>
+      <label class="field"><span>Email</span><input type="email" name="email" autocomplete="email" inputmode="email" required></label>
+      <label class="field"><span>Telefono</span><input type="tel" name="telefono" autocomplete="tel" inputmode="tel" placeholder="es. 333 1234567" required></label>
+      <div class="field-row">
+        <label class="field"><span>Data di nascita</span><input type="date" name="data_nascita" required></label>
+        <label class="field"><span>Luogo di nascita</span><input name="luogo_nascita" placeholder="es. Palermo" required></label>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" name="consenso_privacy" required>
+        <span>Ho letto l'<button type="button" class="linklike" id="open-privacy">informativa privacy</button> e acconsento al trattamento dei miei dati. <em>(obbligatorio)</em></span>
+      </label>
+      <label class="check">
+        <input type="checkbox" name="consenso_marketing">
+        <span>Voglio ricevere offerte e promozioni Speed Queen. <em>(facoltativo)</em></span>
+      </label>
+
+      <div class="form-err" id="reg-err" hidden></div>
+      <button type="submit" class="btn btn-block">Crea il mio profilo</button>
+      <p class="tiny">I tuoi dati sono conservati in modo sicuro e usati solo per i servizi della lavanderia.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<div id="app" class="app" hidden>
+  <header class="appbar">
+    <div class="brand">
+      <div class="mark" id="app-mark"></div>
+      <div>
+        <div class="name">Speed Queen</div>
+        <div class="sub">PALERMO · POLICLINICO</div>
+      </div>
+    </div>
+    <div class="appbar-actions">
+      <button class="bell" id="chat-open" aria-label="Assistente">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5c-1.4 0-2.7-.3-3.9-.9L3 20.5l1.4-4.6A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg>
+      </button>
+      <button class="bell" id="bell" aria-label="Notifiche">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="screen-wrap" id="screen-wrap">
+
+    <!-- ---------- HOME ---------- -->
+    <section class="screen active" id="s-home">
+      <div class="hero">
+        <div class="eyebrow" id="hello">Ciao 👋</div>
+        <h1 class="slogan" id="slogan">Il tuo bucato. Una cosa in meno.</h1>
+      </div>
+
+      <div class="store">
+        <div>
+          <div class="open"><span class="pulse"></span> <span id="store-state">Aperto ora</span></div>
+          <small>Via Sebastiano La Franca, 16 · Policlinico</small>
+        </div>
+        <div style="text-align:right">
+          <div class="hrs">07 — 23</div>
+          <small>tutti i giorni</small>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="sumcard good"><div class="n" id="free-wash">–</div><div class="l">Lavatrici libere</div></div>
+        <div class="sumcard good"><div class="n" id="free-dry">–</div><div class="l">Asciugatrici libere</div></div>
+      </div>
+      <button class="btn ghost btn-block mt" data-go="macchine">Vedi le macchine in tempo reale →</button>
+
+      <!-- Domicilio teaser -->
+      <div class="promo-hero" data-go="prenota">
+        <div class="ph-tag">NOVITÀ</div>
+        <h3>Ora il bucato viene a prenderti.</h3>
+        <p>Ritiro e consegna a domicilio, <b id="delivery-day-txt">ogni mercoledì</b>, solo su prenotazione.</p>
+        <span class="ph-cta">Prenota il ritiro →</span>
+      </div>
+
+      <!-- Promozioni -->
+      <div class="sec-head"><h3>Promozioni</h3></div>
+      <div class="promo-rail" id="promo-rail"></div>
+
+      <!-- Slogan / claim -->
+      <div class="sec-head"><h3>Perché Speed Queen</h3></div>
+      <div class="svc-grid">
+        <div class="svc"><div class="se">💨</div><div class="st">Igiene all'ozono</div><div class="sd">Sanificazione automatica a ogni ciclo.</div></div>
+        <div class="svc"><div class="se">🧺</div><div class="st">Anche piumoni</div><div class="sd">Macchine fino a 18 kg per i capi ingombranti.</div></div>
+        <div class="svc"><div class="se">🐾</div><div class="st">Pet Corner</div><div class="sd">Spazio dedicato ai tessili dei tuoi animali.</div></div>
+        <div class="svc"><div class="se">💳</div><div class="st">Fidelity Card</div><div class="sd">Ogni ciclo costa meno. Sempre.</div></div>
+      </div>
+    </section>
+
+    <!-- ---------- MACCHINE ---------- -->
+    <section class="screen" id="s-macchine">
+      <div class="eyebrow">In tempo reale</div>
+      <h1 class="h-title">Macchine.</h1>
+      <div class="filter" id="filter">
+        <button class="on" data-f="all">Tutte</button>
+        <button data-f="wash">Lavatrici</button>
+        <button data-f="dry">Asciugatrici</button>
+      </div>
+      <div class="grid" id="machines"></div>
+      <p class="tiny center">* Dati dimostrativi. Con le macchine collegate, qui vedrai lo stato reale.</p>
+    </section>
+
+    <!-- ---------- PRENOTA DOMICILIO ---------- -->
+    <section class="screen" id="s-prenota">
+      <div class="eyebrow">Ritiro a domicilio</div>
+      <h1 class="h-title">Prenota il ritiro.</h1>
+      <p class="sub-muted">Passiamo noi a ritirare il bucato e te lo riconsegniamo pulito, <b>solo la domenica mattina</b>. Prenota <b>entro il sabato alle 24:00</b>. Zona entro <b>2 km</b> dalla lavanderia · max <b>4 consegne</b>.</p>
+
+      <form id="book-form" class="form card-form">
+        <label class="field"><span>Domenica disponibile</span>
+          <select name="data_ritiro" id="book-date" required></select>
+        </label>
+        <div class="slot-info">
+          <div><span class="si-k">🧺 Ritiro</span><span class="si-v" id="si-pickup">—</span></div>
+          <div><span class="si-k">✅ Consegna</span><span class="si-v" id="si-delivery">—</span></div>
+          <div><span class="si-k">📦 Posti rimasti</span><span class="si-v" id="slots-left">—</span></div>
+        </div>
+        <label class="field"><span>Indirizzo di ritiro (entro 2 km)</span><input name="indirizzo" placeholder="Via, numero, Palermo" required></label>
+        <button type="button" class="btn ghost btn-block" id="verify-dist">📍 Verifica distanza (usa la mia posizione)</button>
+        <div class="dist-status" id="dist-status" hidden></div>
+        <label class="field"><span>Telefono</span><input type="tel" name="telefono" inputmode="tel" required></label>
+        <label class="field"><span>Note (facoltative)</span><textarea name="note" rows="2" placeholder="Es. citofono, piano, capi delicati…"></textarea></label>
+        <div class="form-err" id="book-err" hidden></div>
+        <button type="submit" class="btn btn-block" id="book-submit">Richiedi prenotazione</button>
+        <p class="tiny">Solo utenti registrati. L'indirizzo deve essere entro 2 km dalla lavanderia. La prenotazione non è un pagamento.</p>
+      </form>
+
+      <div class="sec-head"><h3>Le tue prenotazioni</h3></div>
+      <div id="bookings-list"></div>
+    </section>
+
+    <!-- ---------- CARD ---------- -->
+    <section class="screen" id="s-card">
+      <div class="eyebrow">Fidelity Card</div>
+      <h1 class="h-title">Il tuo vantaggio.</h1>
+      <div class="fid">
+        <div class="chip"></div>
+        <div class="ttl">SALDO DISPONIBILE</div>
+        <div class="bal" id="wallet-bal">0,00 €</div>
+        <div class="nm"><span id="card-name">—</span><span>Speed Queen</span></div>
+      </div>
+      <div class="row2">
+        <button class="btn" id="btn-ricarica">＋ Ricarica</button>
+        <button class="btn ghost" data-go="prezzi-open">Vedi prezzi</button>
+      </div>
+      <div class="card spread">
+        <div><div class="k">RISPARMIATO</div><div class="big-green" id="wallet-saved">0,00 €</div></div>
+        <div class="muted-small">con la<br>Fidelity Card</div>
+      </div>
+      <div class="sec-head"><h3>Movimenti</h3></div>
+      <div class="card tight" id="wallet-moves"></div>
+    </section>
+
+    <!-- ---------- PROFILO ---------- -->
+    <section class="screen" id="s-profilo">
+      <div class="eyebrow">Profilo</div>
+      <h1 class="h-title" id="profile-name">—</h1>
+      <div class="card tight" id="profile-data"></div>
+
+      <button class="row-btn" id="toggle-prezzi"><span>📋 Listino prezzi</span><span class="chev">＋</span></button>
+      <div id="prezzi-box" hidden>
+        <table class="ptbl">
+          <thead><tr><th>Servizio</th><th>Contanti</th><th>Fidelity</th></tr></thead>
+          <tbody>
+            <tr><td class="svc-td"><b>Lavatrice</b><small>8 kg</small></td><td>6,00 €</td><td class="fidv">5,00 €</td></tr>
+            <tr><td class="svc-td"><b>Lavatrice</b><small>15 kg</small></td><td>9,00 €</td><td class="fidv">8,00 €</td></tr>
+            <tr><td class="svc-td"><b>Lavatrice</b><small>18 kg</small></td><td>12,00 €</td><td class="fidv">11,00 €</td></tr>
+            <tr><td class="svc-td"><b>Asciugatrice</b><small>15 kg · 10 min</small></td><td>2,00 €</td><td class="fidv">1,50 €</td></tr>
+            <tr><td class="svc-td"><b>🐾 Lavatrice</b><small>Pet · 10 kg</small></td><td>6,00 €</td><td class="fidv">5,00 €</td></tr>
+            <tr><td class="svc-td"><b>🐾 Asciugatrice</b><small>Pet · 10 kg · 15 min</small></td><td>2,00 €</td><td class="fidv">1,50 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class="row-btn" data-go="info-call"><span>📞 091 205162</span><span class="chev">→</span></button>
+      <button class="row-btn" id="open-privacy2"><span>🔒 Informativa privacy</span><span class="chev">→</span></button>
+      <button class="row-btn danger" id="logout"><span>Esci / elimina profilo</span><span class="chev">→</span></button>
+      <p class="tiny center">Speed Queen Palermo · Via Sebastiano La Franca, 16</p>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tab on" data-t="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Home</button>
+    <button class="tab" data-t="macchine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><circle cx="12" cy="13" r="5"/><circle cx="12" cy="13" r="1.6"/></svg>Macchine</button>
+    <button class="tab" data-t="prenota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg>Prenota</button>
+    <button class="tab" data-t="card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19"/></svg>Card</button>
+    <button class="tab" data-t="profilo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profilo</button>
+  </nav>
+
+  <!-- chatbot -->
+  <div class="chat-bg" id="chat-bg"></div>
+  <section class="chat" id="chat" aria-label="Assistente Speed Queen">
+    <div class="chat-head">
+      <div class="chat-id">
+        <div class="chat-av">Q</div>
+        <div>
+          <div class="chat-name">Assistente Speed Queen</div>
+          <div class="chat-stat"><span class="dotlive"></span> Online · risponde subito</div>
+        </div>
+      </div>
+      <button class="chat-close" id="chat-close" aria-label="Chiudi">✕</button>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-chips" id="chat-chips"></div>
+    <form class="chat-input" id="chat-form">
+      <input id="chat-text" placeholder="Scrivi un messaggio…" autocomplete="off">
+      <button type="submit" aria-label="Invia">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+  </section>
+
+  <!-- toast -->
+  <div class="toast" id="toast"><div class="te">🔔</div><div><div class="tt" id="toast-t"></div><div class="td" id="toast-d"></div></div></div>
+
+  <!-- machine sheet -->
+  <div class="sheet-bg" id="sheetbg"></div>
+  <div class="sheet" id="sheet">
+    <div class="handle"></div>
+    <h3 id="sh-title">Lavatrice</h3>
+    <p class="mp" id="sh-sub"></p>
+    <div class="detail"><span>Ciclo consigliato</span><b>Misto 40° · 32 min</b></div>
+    <div class="detail"><span>Prezzo Fidelity</span><b style="color:var(--red)" id="sh-price">5,00 €</b></div>
+    <button class="btn btn-block" id="sh-start">Avvia e paga con Fidelity</button>
+    <button class="btn ghost btn-block" id="sh-cancel">Annulla</button>
+  </div>
+</div>
+
+<!-- privacy modal -->
+<div class="modal-bg" id="privacy-bg">
+  <div class="modal">
+    <h3>Informativa privacy</h3>
+    <div class="modal-body">
+      <p>Speed Queen Palermo (Via Sebastiano La Franca, 16 — tel. 091 205162) tratta i tuoi dati personali (nome, cognome, email, telefono, data e luogo di nascita) per:</p>
+      <ul>
+        <li>gestire il tuo profilo e la Fidelity Card;</li>
+        <li>gestire le prenotazioni del ritiro a domicilio;</li>
+        <li>inviarti promozioni, <b>solo</b> se hai dato il consenso facoltativo.</li>
+      </ul>
+      <p>I dati sono conservati per il tempo necessario ai servizi. Puoi chiedere in qualsiasi momento accesso, rettifica o cancellazione scrivendo a info@speedqueenpalermo.it.</p>
+      <p class="tiny">Testo di esempio da far validare prima della pubblicazione reale.</p>
+    </div>
+    <button class="btn btn-block" id="privacy-close">Ho capito</button>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

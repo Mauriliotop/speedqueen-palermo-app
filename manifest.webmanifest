@@ -1,0 +1,18 @@
+{
+  "name": "Speed Queen Palermo",
+  "short_name": "Speed Queen",
+  "description": "La tua lavanderia self-service a Palermo: macchine in tempo reale, Fidelity Card, ritiro a domicilio e promozioni.",
+  "lang": "it-IT",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#E5322A",
+  "categories": ["lifestyle", "utilities"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
